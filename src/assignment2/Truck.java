@@ -6,6 +6,8 @@ public abstract class Truck {
 	
 	//will need a constructor and some abstract classes
 	//which will be implemented in ColdTruck and NormalTruck files
+	
+	
 	///IMPORTANT
 	/// 
 	///  Somehow we must be able to go through the list of items

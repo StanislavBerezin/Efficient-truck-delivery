@@ -20,39 +20,40 @@ public class Item {
 		this.itemTemp = itemTemp;
 
 	}
-	
 
-	//returning Name of the item
+	// returning Name of the item
 	public String getName() {
 		return this.itemName;
 	}
-	
-	//returning the cost of the item
+
+	// returning the cost of the item
 	public double getCost() {
 		return this.itemCost;
 	}
-	
-	//returning the price of the item
+
+	// returning the price of the item
 	public double getPrice() {
 		return this.itemPrice;
 	}
-	
-	//returning reordering point
+
+	// returning reordering point
 	public int getReorderPoint() {
 		return this.reorderPoint;
 	}
-	
-	//returning reorderAmount
+
+	// returning reorderAmount
 	public int getReorderAmount() {
 		return this.reorderAmount;
 	}
-	
-	//checking the temperature and returnining it
+
+	// checking the temperature and returning it
 	public double checkTemp() {
-		
-		if (this.itemTemp == null) System.out.println("Item doesnt require refrigiration");
-		
-		else System.out.println("Item does has to be at" + this.itemTemp);
+
+		if (this.itemTemp == 999)
+			System.out.println(this.itemName + " does not require refrigiration");
+
+		else
+			System.out.println(this.itemName + " to be regridgerated at " + this.itemTemp + "degrees");
 
 		return this.itemTemp;
 	}

@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,6 +46,8 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	private JButton btnSales;
 
 	private JScrollPane tableDisplay;
+
+	final JFileChooser fc = new JFileChooser();
 
 	// char c = "\u2103".toCharArray()[0];
 	private String[] columnNames = { "Item", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
@@ -130,20 +133,20 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weighty = 100;
 
 		JLabel storeName = new JLabel("My Store Name");
-		JLabel storeFunds = new JLabel("Funds: $10000");
+		JLabel storeCapital = new JLabel("Capital: $100000.00");
 		JLabel inv = new JLabel("Inventory");
 
 		storeName.setFont(new Font("Arial", Font.PLAIN, 20));
 		storeName.setForeground(Color.white);
 
-		storeFunds.setFont(new Font("Arial", Font.PLAIN, 20));
-		storeFunds.setForeground(Color.white);
+		storeCapital.setFont(new Font("Arial", Font.PLAIN, 20));
+		storeCapital.setForeground(Color.white);
 
 		inv.setFont(new Font("Arial", Font.PLAIN, 16));
 		inv.setForeground(Color.white);
 
 		addToPanel(pnlHeader, storeName, constraints, 0, 0, 2, 2);
-		addToPanel(pnlHeader, storeFunds, constraints, 2, 0, 2, 2);
+		addToPanel(pnlHeader, storeCapital, constraints, 2, 0, 2, 2);
 		addToPanel(pnlHeader, inv, constraints, 0, 4, 2, 2);
 
 	}
@@ -217,18 +220,15 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 		// Consider the alternatives - not all active at once.
 		if (src == btnAdd) {
-			JOptionPane.showMessageDialog(this, "A new pane will popup here to find item list CSV file",
-					"Add Items to inventory", JOptionPane.WARNING_MESSAGE);
+			fc.showOpenDialog(pnlTable);
 		} else if (src == btnOrder) {
 			JOptionPane.showMessageDialog(this,
 					"This button will generate a new manifest based on current stock levels and respective reorder points",
 					"Generate manifest", JOptionPane.WARNING_MESSAGE);
 		} else if (src == btnSales) {
-			JOptionPane.showMessageDialog(this, "A new pane will popup to find sales list file ", "Upload sales list",
-					JOptionPane.WARNING_MESSAGE);
+			fc.showOpenDialog(pnlTable);
 		} else if (src == btnReceive) {
-			JOptionPane.showMessageDialog(this, "A new pane will popup to find manifest file to upload ",
-					"Upload sales list", JOptionPane.WARNING_MESSAGE);
+			fc.showOpenDialog(pnlTable);
 		}
 	}
 

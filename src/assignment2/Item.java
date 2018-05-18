@@ -8,6 +8,7 @@ public class Item {
 	int reorderPoint;
 	int reorderAmount;
 	double itemTemp;
+	int quantity = 0;
 
 	// constructor maybe will add more things along the way
 	Item(String itemName, double itemCost, double itemPrice, int reorderPoint, int reorderAmount, int itemTemp) {
@@ -56,6 +57,12 @@ public class Item {
 			System.out.println(this.itemName + " to be regridgerated at " + this.itemTemp + "degrees");
 
 		return this.itemTemp;
+	}
+
+	public int getQuantity() {
+
+		return this.quantity;
+
 	}
 
 }

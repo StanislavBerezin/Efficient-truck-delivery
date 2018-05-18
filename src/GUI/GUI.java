@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -22,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+
+import assignment2.Store;
 
 /**
  * @author Brant Geeves
@@ -50,11 +53,17 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	final JFileChooser fc = new JFileChooser();
 
 	// char c = "\u2103".toCharArray()[0];
-	private String[] columnNames = { "Item", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
+	private String[] columnNames = { "Item", "Quantity", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
 			"Temp " + "\u2103".toCharArray()[0] };
 
-	private Object[][] data = { { "Rice", 5, 10, 5, 5, 999 }, { "Beans", 2, 4, 5, 5, 999 },
-			{ "Biscuits", 3, 6, 5, 5, 999 }, { "Pasta", 4, 8, 5, 5, 999 }, { "Nuts", 1, 2, 5, 5, 999 } };
+	// private Object[][] data = { { "Rice", 0, 5, 10, 5, 5, 999 }, { "Beans", 0, 2,
+	// 4, 5, 5, 999 },
+	// { "Biscuits", 0, 3, 6, 5, 5, 999 }, { "Pasta", 0, 4, 8, 5, 5, 999 }, {
+	// "Nuts", 0, 1, 2, 5, 5, 999 } };
+
+	Store myStore = new Store();
+
+	private Object[][] data;
 
 	/**
 	 * @param arg0
@@ -64,7 +73,11 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		super(arg0);
 	}
 
-	private void createGUI() {
+	private void createGUI() throws IOException {
+
+		myStore.addInventory();
+		data = myStore.createGuiData();
+
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -204,7 +217,12 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	 */
 	@Override
 	public void run() {
-		createGUI();
+		try {
+			createGUI();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*

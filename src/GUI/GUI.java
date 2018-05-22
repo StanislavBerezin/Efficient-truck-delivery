@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 
 import assignment2.Store;
 
@@ -35,19 +34,18 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
-	// Main GUI Panels
+	// GUI Panels
 	private JPanel pnlHeader;
 	private JPanel pnlTable;
 	private JPanel pnlBtn;
 
-	// Popup GUI Panels
-	// private JPanel pnlAddItems;
-
-	private JButton btnAdd;
+	// GUI Buttons
+	//private JButton btnAdd;
 	private JButton btnOrder;
 	private JButton btnReceive;
 	private JButton btnSales;
 
+	// Scroll Pane to hold table
 	private JScrollPane tableDisplay;
 
 	final JFileChooser fc = new JFileChooser();
@@ -61,7 +59,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	// { "Biscuits", 0, 3, 6, 5, 5, 999 }, { "Pasta", 0, 4, 8, 5, 5, 999 }, {
 	// "Nuts", 0, 1, 2, 5, 5, 999 } };
 
-	Store myStore = new Store();
+	Store myStore;
 
 	private Object[][] data;
 
@@ -69,13 +67,15 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	 * @param arg0
 	 * @throws HeadlessException
 	 */
-	public GUI(String arg0) throws HeadlessException {
-		super(arg0);
+	public GUI(Store store) throws HeadlessException {
+		super(store.getStoreName());
+		myStore = store;
 	}
 
 	private void createGUI() throws IOException {
 
-		myStore.addInventory();
+		
+		//myStore.addInventory();
 		data = myStore.createGuiData();
 
 		setSize(WIDTH, HEIGHT);
@@ -86,7 +86,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		pnlTable = createPanel(Color.WHITE);
 		pnlBtn = createPanel(Color.DARK_GRAY);
 
-		btnAdd = createButton("Add Items from file");
+		//btnAdd = createButton("Add Items from file");
 		btnOrder = createButton("Generate manifest");
 		btnReceive = createButton("Receive manifest");
 		btnSales = createButton("Add Sales from file");
@@ -145,7 +145,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weightx = 100;
 		constraints.weighty = 100;
 
-		JLabel storeName = new JLabel("My Store Name");
+		JLabel storeName = new JLabel(myStore.getStoreName());
 		JLabel storeCapital = new JLabel("Capital: $100000.00");
 		JLabel inv = new JLabel("Inventory");
 
@@ -177,7 +177,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weightx = 100;
 		constraints.weighty = 100;
 
-		addToPanel(pnlBtn, btnAdd, constraints, 0, 0, 2, 2);
+		//addToPanel(pnlBtn, btnAdd, constraints, 0, 0, 2, 2);
 		addToPanel(pnlBtn, btnOrder, constraints, 2, 0, 2, 2);
 		addToPanel(pnlBtn, btnReceive, constraints, 4, 0, 2, 2);
 		addToPanel(pnlBtn, btnSales, constraints, 6, 0, 2, 2);
@@ -237,9 +237,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		Object src = e.getSource();
 
 		// Consider the alternatives - not all active at once.
-		if (src == btnAdd) {
-			fc.showOpenDialog(pnlTable);
-		} else if (src == btnOrder) {
+		if (src == btnOrder) {
 			JOptionPane.showMessageDialog(this,
 					"This button will generate a new manifest based on current stock levels and respective reorder points",
 					"Generate manifest", JOptionPane.WARNING_MESSAGE);
@@ -253,9 +251,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		SwingUtilities.invokeLater(new GUI("My Store Planner"));
-	}
+//	public static void main(String[] args) {
+//		JFrame.setDefaultLookAndFeelDecorated(true);
+//		SwingUtilities.invokeLater(new GUI("My Store Planner"));
+//	}
 
 }

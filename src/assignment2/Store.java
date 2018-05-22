@@ -25,11 +25,11 @@ public class Store {
 	// it reads the CSV
 	// and returns a list of item objects, each with 0 quantity
 
-	public void addInventory() throws IOException {
+	public void addInventory(String fileLoc) throws IOException {
 
 		List<Item> itemList = ItemPropertyImporter
-				.getCSVItems("C:\\Users\\User\\git\\CAB302\\src\\assignment2\\csv\\item_properties.csv");
-
+				.getCSVItems(fileLoc);
+				
 		for (Item item : itemList) {
 
 			inventory.add(item);
@@ -83,6 +83,18 @@ public class Store {
 		}
 
 		return data;
+	}
+	public String getStoreName(){
+		
+		return this.storeName;
+		
+	}
+	
+	public void setStoreName(String name){
+		
+		this.storeName = name;
+		
+		
 	}
 
 }

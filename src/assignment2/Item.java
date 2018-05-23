@@ -65,4 +65,10 @@ public class Item {
 
 	}
 
+	public void addQuantity(int amount) {
+
+		this.quantity = this.quantity + amount;
+
+	}
+
 }

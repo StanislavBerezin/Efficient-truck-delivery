@@ -9,7 +9,7 @@ public class Store {
 	String storeName;
 	double storeCapital;
 	static final Store instance = new Store();
-	List<Item> inventory = new ArrayList<Item>();
+	public List<Item> inventory = new ArrayList<Item>();
 
 	// private constructor to avoid client applications to use constructor
 	public Store() {
@@ -27,9 +27,8 @@ public class Store {
 
 	public void addInventory(String fileLoc) throws IOException {
 
-		List<Item> itemList = ItemPropertyImporter
-				.getCSVItems(fileLoc);
-				
+		List<Item> itemList = ItemPropertyImporter.getCSVItems(fileLoc);
+
 		for (Item item : itemList) {
 
 			inventory.add(item);
@@ -48,7 +47,7 @@ public class Store {
 
 				int orderAmt = item.reorderPoint + item.reorderAmount - item.quantity;
 
-				String manifestLine = item.itemName + "\t" + Integer.toString(orderAmt);
+				String manifestLine = item.itemName + "," + Integer.toString(orderAmt);
 
 				manifest.add(manifestLine);
 
@@ -84,17 +83,32 @@ public class Store {
 
 		return data;
 	}
-	public String getStoreName(){
-		
+
+	public String getStoreName() {
+
 		return this.storeName;
-		
+
 	}
-	
-	public void setStoreName(String name){
-		
+
+	public void setStoreName(String name) {
+
 		this.storeName = name;
-		
-		
+
+	}
+
+	public double getCapital() {
+
+		return storeCapital;
+	}
+
+	public void printInventory() {
+
+		for (Item item : inventory) {
+
+			System.out.println(item.itemName + " " + item.quantity);
+
+		}
+
 	}
 
 }

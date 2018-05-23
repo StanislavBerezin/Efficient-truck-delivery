@@ -18,11 +18,12 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
+import assignment2.Manifest;
 import assignment2.Store;
 
 /**
@@ -40,7 +41,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	private JPanel pnlBtn;
 
 	// GUI Buttons
-	//private JButton btnAdd;
+	// private JButton btnAdd;
 	private JButton btnOrder;
 	private JButton btnReceive;
 	private JButton btnSales;
@@ -48,16 +49,14 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	// Scroll Pane to hold table
 	private JScrollPane tableDisplay;
 
+	// Table goes inside Scroll Pane
+	private JTable jta;
+	TableModel dm;
+
 	final JFileChooser fc = new JFileChooser();
 
-	// char c = "\u2103".toCharArray()[0];
 	private String[] columnNames = { "Item", "Quantity", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
 			"Temp " + "\u2103".toCharArray()[0] };
-
-	// private Object[][] data = { { "Rice", 0, 5, 10, 5, 5, 999 }, { "Beans", 0, 2,
-	// 4, 5, 5, 999 },
-	// { "Biscuits", 0, 3, 6, 5, 5, 999 }, { "Pasta", 0, 4, 8, 5, 5, 999 }, {
-	// "Nuts", 0, 1, 2, 5, 5, 999 } };
 
 	Store myStore;
 
@@ -74,8 +73,6 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private void createGUI() throws IOException {
 
-		
-		//myStore.addInventory();
 		data = myStore.createGuiData();
 
 		setSize(WIDTH, HEIGHT);
@@ -86,7 +83,6 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		pnlTable = createPanel(Color.WHITE);
 		pnlBtn = createPanel(Color.DARK_GRAY);
 
-		//btnAdd = createButton("Add Items from file");
 		btnOrder = createButton("Generate manifest");
 		btnReceive = createButton("Receive manifest");
 		btnSales = createButton("Add Sales from file");
@@ -107,6 +103,18 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		this.setVisible(true);
 	}
 
+	private void refreshTable() {
+
+		data = myStore.createGuiData();
+		tableDisplay = createTableArea();
+		pnlTable.removeAll();
+		pnlTable.add(tableDisplay, BorderLayout.CENTER);
+		this.getContentPane().add(pnlTable, BorderLayout.CENTER);
+		this.getContentPane().repaint();
+		pnlTable.repaint();
+
+	}
+
 	private JPanel createPanel(Color c) {
 		JPanel jp = new JPanel();
 		jp.setBackground(c);
@@ -121,7 +129,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private JScrollPane createTableArea() {
 
-		JTable jta = new JTable(data, columnNames);
+		jta = new JTable(data, columnNames);
 		jta.setFocusable(false);
 		jta.setFillsViewportHeight(true);
 		jta.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -146,20 +154,25 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weighty = 100;
 
 		JLabel storeName = new JLabel(myStore.getStoreName());
-		JLabel storeCapital = new JLabel("Capital: $100000.00");
+		JLabel labelCap = new JLabel("Capital: $");
+		JLabel capital = new JLabel(Double.toString(myStore.getCapital()));
 		JLabel inv = new JLabel("Inventory");
 
 		storeName.setFont(new Font("Arial", Font.PLAIN, 20));
 		storeName.setForeground(Color.white);
 
-		storeCapital.setFont(new Font("Arial", Font.PLAIN, 20));
-		storeCapital.setForeground(Color.white);
+		labelCap.setFont(new Font("Arial", Font.PLAIN, 20));
+		labelCap.setForeground(Color.WHITE);
+
+		capital.setFont(new Font("Arial", Font.PLAIN, 20));
+		capital.setForeground(Color.GREEN);
 
 		inv.setFont(new Font("Arial", Font.PLAIN, 16));
 		inv.setForeground(Color.white);
 
 		addToPanel(pnlHeader, storeName, constraints, 0, 0, 2, 2);
-		addToPanel(pnlHeader, storeCapital, constraints, 2, 0, 2, 2);
+		addToPanel(pnlHeader, labelCap, constraints, 2, 0, 2, 2);
+		addToPanel(pnlHeader, capital, constraints, 4, 0, 2, 2);
 		addToPanel(pnlHeader, inv, constraints, 0, 4, 2, 2);
 
 	}
@@ -177,7 +190,6 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weightx = 100;
 		constraints.weighty = 100;
 
-		//addToPanel(pnlBtn, btnAdd, constraints, 0, 0, 2, 2);
 		addToPanel(pnlBtn, btnOrder, constraints, 2, 0, 2, 2);
 		addToPanel(pnlBtn, btnReceive, constraints, 4, 0, 2, 2);
 		addToPanel(pnlBtn, btnSales, constraints, 6, 0, 2, 2);
@@ -220,7 +232,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		try {
 			createGUI();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -238,22 +250,33 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 		// Consider the alternatives - not all active at once.
 		if (src == btnOrder) {
-			JOptionPane.showMessageDialog(this,
-					"This button will generate a new manifest based on current stock levels and respective reorder points",
-					"Generate manifest", JOptionPane.WARNING_MESSAGE);
+			fc.showSaveDialog(pnlTable);
+			try {
+				Manifest.createManifest(myStore, fc.getSelectedFile().getAbsolutePath());
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} else if (src == btnSales) {
 			fc.showOpenDialog(pnlTable);
 		} else if (src == btnReceive) {
 			fc.showOpenDialog(pnlTable);
+			try {
+				Manifest.receiveManifest(myStore, fc.getSelectedFile().getAbsolutePath());
+				refreshTable();
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	/**
 	 * @param args
 	 */
-//	public static void main(String[] args) {
-//		JFrame.setDefaultLookAndFeelDecorated(true);
-//		SwingUtilities.invokeLater(new GUI("My Store Planner"));
-//	}
+	// public static void main(String[] args) {
+	// JFrame.setDefaultLookAndFeelDecorated(true);
+	// SwingUtilities.invokeLater(new GUI("My Store Planner"));
+	// }
 
 }

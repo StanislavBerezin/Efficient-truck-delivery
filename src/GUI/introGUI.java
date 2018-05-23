@@ -32,23 +32,16 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	public static final int WIDTH = 300;
 	public static final int HEIGHT = 400;
 
-	
-	
-	private JLabel labelTest;
-	
 	private JPanel pnlBtn;
 	private JLabel labelName;
 	private JTextArea textName;
-	
+
 	private JButton btnFind, btnCreate;
-	
 
 	final JFileChooser fc = new JFileChooser();
 
-	
 	Store myStore;
 
-	
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
@@ -58,28 +51,23 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		myStore = store;
 	}
 
-	private void createGUI(){
-
-		//myStore.addInventory();
-		//data = myStore.createGuiData();
+	private void createGUI() {
 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		
 		pnlBtn = createPanel(Color.DARK_GRAY);
 
 		labelName = new JLabel("Enter the name of your store:");
 		labelName.setForeground(Color.WHITE);
-		
+
 		btnFind = createButton("Add Items from file");
 		btnCreate = createButton("Create new store");
 		textName = createTextArea();
-		
-		
+
 		layoutButtonPanel();
-		
+
 		this.getContentPane().add(pnlBtn, BorderLayout.CENTER);
 
 		repaint();
@@ -97,14 +85,12 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		jb.addActionListener(this);
 		return jb;
 	}
-	
-	private JTextArea createTextArea(){
+
+	private JTextArea createTextArea() {
 		JTextArea ta = new JTextArea();
 		ta.setRows(1);
 		return ta;
 	}
-
-
 
 	private void layoutButtonPanel() {
 		GridBagLayout layout = new GridBagLayout();
@@ -123,8 +109,6 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		addToPanel(pnlBtn, textName, constraints, 0, 2, 2, 2);
 		addToPanel(pnlBtn, btnFind, constraints, 0, 4, 2, 2);
 		addToPanel(pnlBtn, btnCreate, constraints, 0, 6, 2, 2);
-		//addToPanel(pnlBtn, btnReceive, constraints, 4, 0, 2, 2);
-		//addToPanel(pnlBtn, btnSales, constraints, 6, 0, 2, 2);
 
 	}
 
@@ -162,7 +146,7 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	@Override
 	public void run() {
 		createGUI();
-		
+
 	}
 
 	/*
@@ -185,20 +169,12 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 				e1.printStackTrace();
 			}
 		} else if (src == btnCreate) {
-			
+
 			myStore.setStoreName(textName.getText());
 			this.setVisible(false);
-			SwingUtilities.invokeLater(new GUI(myStore));			
-			
+			SwingUtilities.invokeLater(new GUI(myStore));
+
 		}
 	}
-
-	/**
-	 * @param args
-	 */
-//	public static void main(String[] args) {
-//		JFrame.setDefaultLookAndFeelDecorated(true);
-//		SwingUtilities.invokeLater(new introGUI("Create a new store"));
-//	}
 
 }

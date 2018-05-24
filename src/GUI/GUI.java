@@ -235,6 +235,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 			e.printStackTrace();
 		}
+		refreshTable();
 	}
 
 	/*

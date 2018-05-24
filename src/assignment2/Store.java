@@ -8,11 +8,11 @@ public class Store {
 
 	String storeName;
 	double storeCapital;
-	static final Store instance = new Store();
+	private static final Store instance = new Store();
 	public List<Item> inventory = new ArrayList<Item>();
 
 	// private constructor to avoid client applications to use constructor
-	public Store() {
+	private Store() {
 		this.storeName = "My Store";
 		this.storeCapital = 100000;
 	}

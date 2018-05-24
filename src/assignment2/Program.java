@@ -7,12 +7,10 @@ import GUI.introGUI;
 
 public class Program {
 
-	
 	public static void main(String[] args) {
-		
-		
-		Store myStore = new Store();
-		
+
+		Store myStore = Store.getInstance();
+
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		SwingUtilities.invokeLater(new introGUI(myStore));
 

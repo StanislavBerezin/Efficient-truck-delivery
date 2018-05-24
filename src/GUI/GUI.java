@@ -53,6 +53,11 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	private JTable jta;
 	TableModel dm;
 
+	private JLabel storeName;
+	private JLabel labelCap;
+	private JLabel capital;
+	private JLabel inv;
+
 	final JFileChooser fc = new JFileChooser();
 
 	private String[] columnNames = { "Item", "Quantity", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
@@ -103,15 +108,19 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		this.setVisible(true);
 	}
 
-	private void refreshTable() {
+	private void refreshGUI() {
 
 		data = myStore.createGuiData();
 		tableDisplay = createTableArea();
 		pnlTable.removeAll();
 		pnlTable.add(tableDisplay, BorderLayout.CENTER);
+
+		pnlTable.repaint();
+		capital = new JLabel(Double.toString(myStore.getCapital()));
+		capital.repaint();
+		pnlHeader.repaint();
 		this.getContentPane().add(pnlTable, BorderLayout.CENTER);
 		this.getContentPane().repaint();
-		pnlTable.repaint();
 
 	}
 
@@ -153,10 +162,10 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weightx = 100;
 		constraints.weighty = 100;
 
-		JLabel storeName = new JLabel(myStore.getStoreName());
-		JLabel labelCap = new JLabel("Capital: $");
-		JLabel capital = new JLabel(Double.toString(myStore.getCapital()));
-		JLabel inv = new JLabel("Inventory");
+		storeName = new JLabel(myStore.getStoreName());
+		labelCap = new JLabel("Capital: $");
+		capital = new JLabel(Double.toString(myStore.getCapital()));
+		inv = new JLabel("Inventory");
 
 		storeName.setFont(new Font("Arial", Font.PLAIN, 20));
 		storeName.setForeground(Color.white);
@@ -235,7 +244,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 			e.printStackTrace();
 		}
-		refreshTable();
+		refreshGUI();
 	}
 
 	/*
@@ -258,14 +267,26 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-		} else if (src == btnSales) {
+		}
+		// Button for loading sales logs
+		else if (src == btnSales) {
 			fc.showOpenDialog(pnlTable);
-		} else if (src == btnReceive) {
+			try {
+				Manifest.loadSalesLog(myStore, fc.getSelectedFile().getAbsolutePath());
+				refreshGUI();
+				myStore.printInventory();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+		}
+		// Button for loading manifests
+		else if (src == btnReceive) {
 			fc.showOpenDialog(pnlTable);
 			try {
 				Manifest.receiveManifest(myStore, fc.getSelectedFile().getAbsolutePath());
-				refreshTable();
-
+				refreshGUI();
+				myStore.printInventory();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

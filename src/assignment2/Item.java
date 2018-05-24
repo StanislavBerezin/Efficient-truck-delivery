@@ -71,4 +71,10 @@ public class Item {
 
 	}
 
+	public void removeQuantity(int amount) {
+
+		this.quantity = this.quantity - amount;
+
+	}
+
 }

@@ -101,6 +101,18 @@ public class Store {
 		return storeCapital;
 	}
 
+	public void addCapital(double amount) {
+
+		this.storeCapital = this.storeCapital + amount;
+
+	}
+
+	public void lowerCapital(double cost) {
+
+		this.storeCapital = this.storeCapital - cost;
+
+	}
+
 	public void printInventory() {
 
 		for (Item item : inventory) {
@@ -108,6 +120,7 @@ public class Store {
 			System.out.println(item.itemName + " " + item.quantity);
 
 		}
+		System.out.println("Capital: $" + Double.toString(this.getCapital()));
 
 	}
 

@@ -9,10 +9,10 @@ public class Program {
 
 	public static void main(String[] args) {
 
-		Store myStore = Store.getInstance();
+		// Store myStore = Store.getInstance();
 
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		SwingUtilities.invokeLater(new introGUI(myStore));
+		SwingUtilities.invokeLater(new introGUI(Store.getInstance()));
 
 	}
 

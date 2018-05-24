@@ -46,6 +46,37 @@ public class Manifest {
 				if (Objects.equals(item.itemName, thisLine[0])) {
 
 					item.addQuantity(Integer.parseInt(thisLine[1]));
+					store.lowerCapital(item.itemCost * Double.parseDouble(thisLine[1]));
+
+				}
+
+			}
+
+			line = r.readLine();
+		}
+
+		r.close();
+
+	}
+
+	public static void loadSalesLog(Store store, String fileLocation) throws IOException {
+
+		BufferedReader r = new BufferedReader(new FileReader(fileLocation));
+
+		String line = r.readLine();
+
+		while (line != null) {
+
+			String[] thisLine = line.split(",");
+
+			// System.out.println(thisLine[0] + thisLine[1]);
+
+			for (Item item : store.inventory) {
+
+				if (Objects.equals(item.itemName, thisLine[0])) {
+
+					item.removeQuantity(Integer.parseInt(thisLine[1]));
+					store.addCapital(item.itemPrice * Double.parseDouble(thisLine[1]));
 
 				}
 

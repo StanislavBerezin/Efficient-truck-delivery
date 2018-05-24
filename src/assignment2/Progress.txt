@@ -1,8 +1,31 @@
 here we can leave comments on our progress
 problems that we are facing etc and just general comments
 
-1)
-2)
-3)
-4)
-5)
+- Updating the GUI after button actions is not working correctly:
+	The table will update after window resize, but goes blank otherwise
+	The label to show Store Capital is not updating at all
+	Need to work out correct process for refreshing GUI	
+
+- The backend processes for inventory are working as expected:
+	User can name the store and add and item list
+	User can generate a manifest based on item quantities
+	User can upload manifests to adjust inventory levels and store capital
+	User can upload sales logs to adjust inventory and store capital
+	
+- To do:
+
+	1. Move the first Generate Manifest to the intro screen. Main GUI used only for adding sales and receiving manifests
+	
+	2. Subsequent manifests should be generated when a sales log is uploaded, instead of button; lower stock levels, raise capital
+	and then create new manifest based on updated inventory.
+	
+	3. Only one action on main GUI should be possible at a time. If user loads a sales log,
+	then the sales log button should be deactivated until the manifest has been created.
+	To prevent loading mulitple/same sales logs or manifests being loaded and causing incorrect inventory/capital values
+	
+	4. Trucks functionality:
+	
+		Currently, manifests only show items and amounts. There is no consideration of item temps or truck capacity etc
+		
+		
+	

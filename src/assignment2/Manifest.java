@@ -111,17 +111,56 @@ public class Manifest {
 
 		BufferedReader r = new BufferedReader(new FileReader(fileLocation));
 
+		double safeTemp = 999;
+
+		int ordinaryCargo = 0;
+
 		String line = r.readLine();
 
 		while (line != null) {
 
-			String[] thisLine = line.split(",");
+			System.out.println("safeTemp: " + Double.toString(safeTemp));
 
-			// System.out.println(thisLine[0] + thisLine[1]);
+			if (Objects.equals(line, ">Refridgerated") || Objects.equals(line, ">Ordinary")) {
+
+				if (safeTemp != 999) {
+
+					Store.getInstance().lowerCapital(900 + 200 * Math.pow(0.7, safeTemp / 5));
+					System.out.println("Cold truck cost: $" + Double.toString(900 + 200 * Math.pow(0.7, safeTemp / 5)));
+
+				}
+
+				else if (ordinaryCargo != 0) {
+
+					Store.getInstance().lowerCapital(750 + 0.25 * ordinaryCargo);
+					System.out.println("Ordinary truck cost: $" + Double.toString(750 + 0.25 * ordinaryCargo));
+
+				}
+				System.out.println(line);
+				safeTemp = 999;
+				ordinaryCargo = 0;
+				line = r.readLine();
+
+			}
+
+			String[] thisLine = line.split(",");
 
 			for (Item item : Store.getInstance().inventory) {
 
 				if (Objects.equals(item.itemName, thisLine[0])) {
+
+					if (item.itemTemp == 999) {
+
+						ordinaryCargo = ordinaryCargo + Integer.parseInt(thisLine[1]);
+						System.out.println(ordinaryCargo);
+
+					} else {
+
+						if (item.itemTemp < safeTemp) {
+							safeTemp = item.itemTemp;
+						}
+						System.out.println(safeTemp);
+					}
 
 					item.addQuantity(Integer.parseInt(thisLine[1]));
 					Store.getInstance().lowerCapital(item.itemCost * Double.parseDouble(thisLine[1]));
@@ -133,6 +172,19 @@ public class Manifest {
 			line = r.readLine();
 		}
 
+		if (safeTemp != 999) {
+
+			Store.getInstance().lowerCapital(900 + 200 * Math.pow(0.7, safeTemp / 5));
+			System.out.println("Cold truck cost: $" + Double.toString(900 + 200 * Math.pow(0.7, safeTemp / 5)));
+
+		}
+
+		else if (ordinaryCargo != 0) {
+
+			Store.getInstance().lowerCapital(750 + 0.25 * ordinaryCargo);
+			System.out.println("Ordinary truck cost: $" + Double.toString(750 + 0.25 * ordinaryCargo));
+
+		}
 		r.close();
 
 	}

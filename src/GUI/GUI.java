@@ -106,7 +106,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private void refreshGUI() {
 
-		capital.setText("Capital: $" + Double.toString(Store.getInstance().getCapital()));
+		capital.setText(String.format("Capital: $%.2f", Store.getInstance().getCapital()));
 		checkCapital();
 		dm.setDataVector(Store.getInstance().createGuiData(), columnNames);
 
@@ -152,7 +152,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weighty = 100;
 
 		storeName = new JLabel(Store.getInstance().getStoreName());
-		capital = new JLabel("Capital: $" + Double.toString(Store.getInstance().getCapital()));
+		capital = new JLabel(String.format("Capital: $%.2f", Store.getInstance().getCapital()));
 		inv = new JLabel("Inventory");
 
 		storeName.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -268,7 +268,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 			try {
 				Manifest.loadSalesLog(fc.getSelectedFile().getAbsolutePath());
 				refreshGUI();
-				Store.getInstance().printInventory();
+				// Store.getInstance().printInventory();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -280,7 +280,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 			try {
 				Manifest.receiveManifest(fc.getSelectedFile().getAbsolutePath());
 				refreshGUI();
-				Store.getInstance().printInventory();
+				// Store.getInstance().printInventory();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

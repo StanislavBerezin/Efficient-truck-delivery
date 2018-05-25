@@ -7,7 +7,7 @@ public class Item {
 	double itemPrice;
 	int reorderPoint;
 	int reorderAmount;
-	double itemTemp;
+	int itemTemp;
 	int quantity = 0;
 
 	// constructor maybe will add more things along the way
@@ -47,14 +47,8 @@ public class Item {
 		return this.reorderAmount;
 	}
 
-	// checking the temperature and returning it
-	public double checkTemp() {
-
-		if (this.itemTemp == 999)
-			System.out.println(this.itemName + " does not require refrigiration");
-
-		else
-			System.out.println(this.itemName + " to be regridgerated at " + this.itemTemp + "degrees");
+	// return item safe temp
+	public int getTemp() {
 
 		return this.itemTemp;
 	}

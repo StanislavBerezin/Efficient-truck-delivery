@@ -254,7 +254,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		if (src == btnOrder) {
 			fc.showSaveDialog(pnlTable);
 			try {
-				Manifest.createManifest(myStore, fc.getSelectedFile().getAbsolutePath());
+				Manifest.createManifest(fc.getSelectedFile().getAbsolutePath());
 
 			} catch (IOException e1) {
 				e1.printStackTrace();

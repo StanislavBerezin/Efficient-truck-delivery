@@ -1,5 +1,6 @@
 package assignment2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Truck {
@@ -18,8 +19,15 @@ public abstract class Truck {
 	int truckCapacity;
 	List<Item> inventory;
 
+	protected List<String> cargoList = new ArrayList<>();
+
 	public abstract double calculateCost();
 
 	public abstract int calculateCapacity();
+
+	public List<String> getCargo() {
+
+		return this.cargoList;
+	}
 
 }

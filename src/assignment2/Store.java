@@ -37,28 +37,6 @@ public class Store {
 
 	}
 
-	public List<String> makeManifest() {
-
-		List<String> manifest = new ArrayList<>();
-
-		for (Item item : inventory) {
-
-			if (item.quantity <= item.reorderPoint) {
-
-				int orderAmt = item.reorderPoint + item.reorderAmount - item.quantity;
-
-				String manifestLine = item.itemName + "," + Integer.toString(orderAmt);
-
-				manifest.add(manifestLine);
-
-			}
-
-		}
-
-		return manifest;
-
-	}
-
 	public Object[][] createGuiData() {
 
 		Object[][] data = new Object[inventory.size()][7];

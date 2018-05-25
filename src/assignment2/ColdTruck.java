@@ -2,26 +2,44 @@ package assignment2;
 
 public class ColdTruck extends Truck {
 
-	// extends the truck class, so in truck can add
-	// some abstract classes that will be applicable
-	// only to refridgerated truck.
-	double temp;
-	double truckCost;
+	int capacity = 800;
+	double cost;
+	int cargoCount = 0;
+	// List<String> cargoList = new ArrayList<>();
 
-	public void temperatureRequired() {
-		// based on the coldest item's requirement
-		// need to go through the list
+	int safeTemp = 10;
+
+	public ColdTruck() {
+		super();
+		this.cargoList.add(">Refridgerated");
+
 	}
 
-	// calculating cost as per requirement
+	@Override
+	public double calculateCost() {
 
-	public double calculateCost(double temperature) {
+		cost = 900 + 200 * Math.pow(0.7, safeTemp / 5);
 
-		this.temp = temperature;
+		return cost;
 
-		this.truckCost = 900 + (200 * (java.lang.Math.pow(0.7, (this.temp / 5))));
+	}
 
-		return this.truckCost;
+	@Override
+	public int calculateCapacity() {
+
+		int remainingCapacity = capacity - cargoCount;
+
+		return remainingCapacity;
+	}
+
+	public void addCargo(String cargoLine, int quantity, int newTemp) {
+
+		this.cargoList.add(cargoLine);
+		this.cargoCount = cargoCount + quantity;
+		if (newTemp < safeTemp) {
+			safeTemp = newTemp;
+		}
+
 	}
 
 }

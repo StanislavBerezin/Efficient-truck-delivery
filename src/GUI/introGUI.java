@@ -40,15 +40,13 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 
 	final JFileChooser fc = new JFileChooser();
 
-	Store myStore;
-
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
 	 */
-	public introGUI(Store store) throws HeadlessException {
-		super(store.getStoreName());
-		myStore = store;
+	public introGUI() throws HeadlessException {
+		super(Store.getInstance().getStoreName());
+
 	}
 
 	private void createGUI() {
@@ -164,15 +162,15 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		if (src == btnFind) {
 			fc.showOpenDialog(null);
 			try {
-				myStore.addInventory(fc.getSelectedFile().getAbsolutePath());
+				Store.getInstance().addInventory(fc.getSelectedFile().getAbsolutePath());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		} else if (src == btnCreate) {
 
-			myStore.setStoreName(textName.getText());
+			Store.getInstance().setStoreName(textName.getText());
 			this.setVisible(false);
-			SwingUtilities.invokeLater(new GUI(myStore));
+			SwingUtilities.invokeLater(new GUI());
 
 		}
 	}

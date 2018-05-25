@@ -54,7 +54,6 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	DefaultTableModel dm = new DefaultTableModel();
 
 	private JLabel storeName;
-	private JLabel labelCap;
 	private JLabel capital;
 	private JLabel inv;
 
@@ -63,22 +62,19 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	private String[] columnNames = { "Item", "Quantity", "Cost ($)", "Price ($)", "Re-order Point", "Re-order Amount",
 			"Temp " + "\u2103".toCharArray()[0] };
 
-	Store myStore;
-
 	private Object[][] data;
 
 	/**
 	 * @param arg0
 	 * @throws HeadlessException
 	 */
-	public GUI(Store store) throws HeadlessException {
-		super(store.getStoreName());
-		myStore = store;
+	public GUI() throws HeadlessException {
+		super(Store.getInstance().getStoreName());
 	}
 
 	private void createGUI() throws IOException {
 
-		data = myStore.createGuiData();
+		data = Store.getInstance().createGuiData();
 
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,7 +106,8 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private void refreshGUI() {
 
-		capital.setText(Double.toString(myStore.getCapital()));
+		capital.setText("Capital: $" + Double.toString(Store.getInstance().getCapital()));
+		checkCapital();
 		dm.setDataVector(Store.getInstance().createGuiData(), columnNames);
 
 	}
@@ -154,16 +151,12 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		constraints.weightx = 100;
 		constraints.weighty = 100;
 
-		storeName = new JLabel(myStore.getStoreName());
-		labelCap = new JLabel("Capital: $");
-		capital = new JLabel(Double.toString(myStore.getCapital()));
+		storeName = new JLabel(Store.getInstance().getStoreName());
+		capital = new JLabel("Capital: $" + Double.toString(Store.getInstance().getCapital()));
 		inv = new JLabel("Inventory");
 
 		storeName.setFont(new Font("Arial", Font.PLAIN, 20));
 		storeName.setForeground(Color.white);
-
-		labelCap.setFont(new Font("Arial", Font.PLAIN, 20));
-		labelCap.setForeground(Color.WHITE);
 
 		capital.setFont(new Font("Arial", Font.PLAIN, 20));
 		capital.setForeground(Color.GREEN);
@@ -172,9 +165,18 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		inv.setForeground(Color.white);
 
 		addToPanel(pnlHeader, storeName, constraints, 0, 0, 2, 2);
-		addToPanel(pnlHeader, labelCap, constraints, 2, 0, 2, 2);
 		addToPanel(pnlHeader, capital, constraints, 4, 0, 2, 2);
 		addToPanel(pnlHeader, inv, constraints, 0, 4, 2, 2);
+
+	}
+
+	private void checkCapital() {
+
+		if (Store.getInstance().getCapital() >= 0) {
+			capital.setForeground(Color.GREEN);
+		} else {
+			capital.setForeground(Color.RED);
+		}
 
 	}
 
@@ -264,9 +266,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		else if (src == btnSales) {
 			fc.showOpenDialog(pnlTable);
 			try {
-				Manifest.loadSalesLog(myStore, fc.getSelectedFile().getAbsolutePath());
+				Manifest.loadSalesLog(fc.getSelectedFile().getAbsolutePath());
 				refreshGUI();
-				myStore.printInventory();
+				Store.getInstance().printInventory();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -276,9 +278,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		else if (src == btnReceive) {
 			fc.showOpenDialog(pnlTable);
 			try {
-				Manifest.receiveManifest(myStore, fc.getSelectedFile().getAbsolutePath());
+				Manifest.receiveManifest(fc.getSelectedFile().getAbsolutePath());
 				refreshGUI();
-				myStore.printInventory();
+				Store.getInstance().printInventory();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

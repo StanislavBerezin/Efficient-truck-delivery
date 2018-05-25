@@ -54,7 +54,10 @@ public class Store {
 				data[i][3] = item.itemPrice;
 				data[i][4] = item.reorderPoint;
 				data[i][5] = item.reorderAmount;
-				data[i][6] = item.itemTemp;
+				if (item.itemTemp != 999) {
+					data[i][6] = item.itemTemp;
+				}
+
 			}
 
 		}

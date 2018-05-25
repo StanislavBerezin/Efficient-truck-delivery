@@ -107,7 +107,7 @@ public class Manifest {
 
 	}
 
-	public static void receiveManifest(Store store, String fileLocation) throws IOException {
+	public static void receiveManifest(String fileLocation) throws IOException {
 
 		BufferedReader r = new BufferedReader(new FileReader(fileLocation));
 
@@ -119,12 +119,12 @@ public class Manifest {
 
 			// System.out.println(thisLine[0] + thisLine[1]);
 
-			for (Item item : store.inventory) {
+			for (Item item : Store.getInstance().inventory) {
 
 				if (Objects.equals(item.itemName, thisLine[0])) {
 
 					item.addQuantity(Integer.parseInt(thisLine[1]));
-					store.lowerCapital(item.itemCost * Double.parseDouble(thisLine[1]));
+					Store.getInstance().lowerCapital(item.itemCost * Double.parseDouble(thisLine[1]));
 
 				}
 
@@ -137,7 +137,7 @@ public class Manifest {
 
 	}
 
-	public static void loadSalesLog(Store store, String fileLocation) throws IOException {
+	public static void loadSalesLog(String fileLocation) throws IOException {
 
 		BufferedReader r = new BufferedReader(new FileReader(fileLocation));
 
@@ -149,12 +149,12 @@ public class Manifest {
 
 			// System.out.println(thisLine[0] + thisLine[1]);
 
-			for (Item item : store.inventory) {
+			for (Item item : Store.getInstance().inventory) {
 
 				if (Objects.equals(item.itemName, thisLine[0])) {
 
 					item.removeQuantity(Integer.parseInt(thisLine[1]));
-					store.addCapital(item.itemPrice * Double.parseDouble(thisLine[1]));
+					Store.getInstance().addCapital(item.itemPrice * Double.parseDouble(thisLine[1]));
 
 				}
 

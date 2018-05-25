@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import assignment2.Manifest;
 import assignment2.Store;
@@ -51,7 +51,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	// Table goes inside Scroll Pane
 	private JTable jta;
-	TableModel dm;
+	DefaultTableModel dm = new DefaultTableModel();
 
 	private JLabel storeName;
 	private JLabel labelCap;
@@ -110,17 +110,8 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private void refreshGUI() {
 
-		data = myStore.createGuiData();
-		tableDisplay = createTableArea();
-		pnlTable.removeAll();
-		pnlTable.add(tableDisplay, BorderLayout.CENTER);
-
-		pnlTable.repaint();
-		capital = new JLabel(Double.toString(myStore.getCapital()));
-		capital.repaint();
-		pnlHeader.repaint();
-		this.getContentPane().add(pnlTable, BorderLayout.CENTER);
-		this.getContentPane().repaint();
+		capital.setText(Double.toString(myStore.getCapital()));
+		dm.setDataVector(Store.getInstance().createGuiData(), columnNames);
 
 	}
 
@@ -138,7 +129,8 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private JScrollPane createTableArea() {
 
-		jta = new JTable(data, columnNames);
+		dm.setDataVector(data, columnNames);
+		jta = new JTable(dm);
 		jta.setFocusable(false);
 		jta.setFillsViewportHeight(true);
 		jta.setFont(new Font("Arial", Font.PLAIN, 12));

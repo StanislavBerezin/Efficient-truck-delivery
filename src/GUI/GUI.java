@@ -18,11 +18,15 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import Exceptions.CSVFormatException;
+import Exceptions.DeliveryException;
+import Exceptions.StockException;
 import assignment2.Manifest;
 import assignment2.Store;
 
@@ -69,7 +73,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	 * @throws HeadlessException
 	 */
 	public GUI() throws HeadlessException {
-		super(Store.getInstance().getStoreName());
+		super("Inventory Controller 5000");
+		
+		
 	}
 
 	private void createGUI() throws IOException {
@@ -100,6 +106,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		this.getContentPane().add(pnlTable, BorderLayout.CENTER);
 		this.getContentPane().add(pnlBtn, BorderLayout.SOUTH);
 
+		this.setLocationRelativeTo(null);
 		repaint();
 		this.setVisible(true);
 	}
@@ -252,14 +259,46 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		// Get event source
 		Object src = e.getSource();
 
-		// Consider the alternatives - not all active at once.
+		// Button for creating manifests
 		if (src == btnOrder) {
 			fc.showSaveDialog(pnlTable);
 			try {
 				Manifest.createManifest(fc.getSelectedFile().getAbsolutePath());
 
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			}	catch (StockException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: Creating Manifest", JOptionPane.WARNING_MESSAGE);
+			}	catch (CSVFormatException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: CSV Format", JOptionPane.WARNING_MESSAGE);
+			}	catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.",
+						"Error: IOException", JOptionPane.WARNING_MESSAGE);
+			}	catch (NullPointerException e1) {
+				JOptionPane.showMessageDialog(this, "In order to create a new Manifest, you must save the file.",
+						"Error: Manifest file not saved", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+		
+		// Button for loading manifests
+		else if (src == btnReceive) {
+			fc.showOpenDialog(pnlTable);
+			try {
+				Manifest.receiveManifest(fc.getSelectedFile().getAbsolutePath());
+				refreshGUI();
+				// Store.getInstance().printInventory();
+			} 	catch (CSVFormatException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: CSV Format", JOptionPane.WARNING_MESSAGE);
+			} 	catch (DeliveryException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: Manifest Format", JOptionPane.WARNING_MESSAGE);
+			}	catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.",
+						"Error: IOException", JOptionPane.WARNING_MESSAGE);
+			}	catch (NullPointerException e1) {
+				JOptionPane.showMessageDialog(this, "In order to receive a new delivery, you must upload a Manifest file.",
+						"Error: Manifest file not found", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		// Button for loading sales logs
@@ -269,30 +308,21 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 				Manifest.loadSalesLog(fc.getSelectedFile().getAbsolutePath());
 				refreshGUI();
 				// Store.getInstance().printInventory();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-
-		}
-		// Button for loading manifests
-		else if (src == btnReceive) {
-			fc.showOpenDialog(pnlTable);
-			try {
-				Manifest.receiveManifest(fc.getSelectedFile().getAbsolutePath());
-				refreshGUI();
-				// Store.getInstance().printInventory();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			} 	catch (CSVFormatException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: CSV Format", JOptionPane.WARNING_MESSAGE);
+			} 	catch (StockException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: Stock", JOptionPane.WARNING_MESSAGE);
+			} 	catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.",
+						"Error: IOException", JOptionPane.WARNING_MESSAGE);
+			}	catch (NullPointerException e1) {
+				JOptionPane.showMessageDialog(this, "In order to update sales data, you must upload a Sales Log file.",
+						"Error: Sales Log not found", JOptionPane.WARNING_MESSAGE);
+			}	
 		}
 	}
 
-	/**
-	 * @param args
-	 */
-	// public static void main(String[] args) {
-	// JFrame.setDefaultLookAndFeelDecorated(true);
-	// SwingUtilities.invokeLater(new GUI("My Store Planner"));
-	// }
 
 }

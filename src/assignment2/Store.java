@@ -4,17 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exceptions.CSVFormatException;
+import Exceptions.FormException;
+
 public class Store {
 
 	String storeName;
-	double storeCapital;
+	private double storeCapital;
 	private static final Store instance = new Store();
 	public List<Item> inventory = new ArrayList<Item>();
-
+	
 	// private constructor to avoid client applications to use constructor
-	private Store() {
-		this.storeName = "My Store";
+	private Store(){
+		
+		this.storeName = "myStore";
 		this.storeCapital = 100000;
+		
 	}
 
 	public static Store getInstance() {
@@ -25,16 +30,23 @@ public class Store {
 	// it reads the CSV
 	// and returns a list of item objects, each with 0 quantity
 
-	public void addInventory(String fileLoc) throws IOException {
+	public void addInventory(String fileLocation) throws CSVFormatException, IOException {
 
-		List<Item> itemList = ItemPropertyImporter.getCSVItems(fileLoc);
+		if(!ItemPropertyImporter.isFileCSV(fileLocation)){
+			
+			throw new CSVFormatException("You must upload a file with extension: .csv");
+		}
+		//System.out.println(ItemPropertyImporter.getFileExtension(fileLoc));
+		//System.out.println(fileLoc);
+		
+		List<Item> itemList = ItemPropertyImporter.getCSVItems(fileLocation);
 
 		for (Item item : itemList) {
 
 			inventory.add(item);
 
 		}
-
+		
 	}
 
 	public Object[][] createGuiData() {
@@ -71,8 +83,13 @@ public class Store {
 
 	}
 
-	public void setStoreName(String name) {
+	public void setStoreName(String name) throws FormException {
 
+		if(name.length() < 1){
+			
+			throw new FormException("You must enter a store name.");
+		}
+				
 		this.storeName = name;
 
 	}
@@ -104,5 +121,7 @@ public class Store {
 		System.out.println("Capital: $" + Double.toString(this.getCapital()));
 
 	}
+	
+	
 
 }

@@ -17,10 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import Exceptions.CSVFormatException;
+import Exceptions.FormException;
+import Exceptions.StockException;
 import assignment2.Store;
 
 /**
@@ -37,6 +41,8 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	private JTextArea textName;
 
 	private JButton btnFind, btnCreate;
+	
+	private static boolean itemListReceived = false;
 
 	final JFileChooser fc = new JFileChooser();
 
@@ -45,7 +51,7 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	 * @throws HeadlessException
 	 */
 	public introGUI() throws HeadlessException {
-		super(Store.getInstance().getStoreName());
+		super("Inventory Controller 5000");
 
 	}
 
@@ -68,8 +74,11 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 
 		this.getContentPane().add(pnlBtn, BorderLayout.CENTER);
 
+		this.setLocationRelativeTo(null);
 		repaint();
 		this.setVisible(true);
+		
+		
 	}
 
 	private JPanel createPanel(Color c) {
@@ -154,7 +163,7 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 		// Get event source
 		Object src = e.getSource();
 
@@ -163,16 +172,51 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 			fc.showOpenDialog(null);
 			try {
 				Store.getInstance().addInventory(fc.getSelectedFile().getAbsolutePath());
+				itemListReceived = true;
+			} catch (CSVFormatException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: CSV Format", JOptionPane.WARNING_MESSAGE);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(this, "In order to create a new Store, you need to load an Item Properties file.",
+						"Error: No file loaded", JOptionPane.WARNING_MESSAGE);
+			} catch (NullPointerException e1) {
+				JOptionPane.showMessageDialog(this, "The Item Properties file is empty. Please choose another file.",
+						"Error: Empty File", JOptionPane.WARNING_MESSAGE);
 			}
+			
 		} else if (src == btnCreate) {
-
-			Store.getInstance().setStoreName(textName.getText());
-			this.setVisible(false);
-			SwingUtilities.invokeLater(new GUI());
+			
+			try {
+				Store.getInstance().setStoreName(textName.getText());
+				itemWasListAdded();
+				this.setVisible(false);
+				SwingUtilities.invokeLater(new GUI());
+			} 	catch (FormException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: Empty field!", JOptionPane.WARNING_MESSAGE);
+			}	catch (StockException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: No Item Property list", JOptionPane.WARNING_MESSAGE);
+			}
+			
 
 		}
+	}
+	
+	public static boolean itemListAdded(){
+		
+		return itemListReceived;
+			
+	}
+	
+	public static void itemWasListAdded() throws StockException{
+		
+		if(!introGUI.itemListAdded()){
+			
+			throw new StockException("Please add an Item Properties list to continue.");
+		}
+		
+		
 	}
 
 }

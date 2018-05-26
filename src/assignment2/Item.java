@@ -11,7 +11,7 @@ public class Item {
 	int quantity = 0;
 
 	// constructor maybe will add more things along the way
-	Item(String itemName, double itemCost, double itemPrice, int reorderPoint, int reorderAmount, int itemTemp) {
+	public Item(String itemName, double itemCost, double itemPrice, int reorderPoint, int reorderAmount, int itemTemp) {
 
 		this.itemName = itemName;
 		this.itemCost = itemCost;

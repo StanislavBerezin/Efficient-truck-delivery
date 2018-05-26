@@ -171,7 +171,7 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		if (src == btnFind) {
 			fc.showOpenDialog(null);
 			try {
-				Store.getInstance().addInventory(fc.getSelectedFile().getAbsolutePath());
+				Store.getInstance().getInventory().addInventory(fc.getSelectedFile().getAbsolutePath());
 				itemListReceived = true;
 			} catch (CSVFormatException e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage(),

@@ -36,7 +36,7 @@ public class Manifest {
 			
 		}
 
-		for (Item item : Store.getInstance().inventory) {
+		for (Item item : Store.getInstance().getInventory().stockList()) {
 
 			if (item.quantity <= item.reorderPoint) {
 
@@ -176,7 +176,7 @@ public class Manifest {
 
 			String[] thisLine = line.split(",");
 
-			for (Item item : Store.getInstance().inventory) {
+			for (Item item : Store.getInstance().getInventory().stockList()) {
 
 				if (Objects.equals(item.itemName, thisLine[0])) {
 					
@@ -256,7 +256,7 @@ public class Manifest {
 				throw new CSVFormatException("The Sales Log file is in the wrong format. Each line should contain only [ item name,quantity ].");
 			}
 
-			for (Item item : Store.getInstance().inventory) {
+			for (Item item : Store.getInstance().getInventory().stockList()) {
 
 				if (Objects.equals(item.itemName, thisLine[0])) {
 
@@ -290,7 +290,7 @@ public class Manifest {
 		
 		boolean itemsToOrder = false;
 		
-		for (Item item : Store.getInstance().inventory) {
+		for (Item item : Store.getInstance().getInventory().stockList()) {
 			if (item.quantity <= item.reorderPoint) {
 				itemsToOrder = true;
 				return itemsToOrder;

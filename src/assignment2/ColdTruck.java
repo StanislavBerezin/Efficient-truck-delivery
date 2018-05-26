@@ -5,8 +5,6 @@ public class ColdTruck extends Truck {
 	int capacity = 800;
 	double cost;
 	int cargoCount = 0;
-	// List<String> cargoList = new ArrayList<>();
-
 	int safeTemp = 10;
 
 	public ColdTruck() {
@@ -40,6 +38,12 @@ public class ColdTruck extends Truck {
 			safeTemp = newTemp;
 		}
 
+	}
+	
+	public int getSafeTemp(){
+		
+		return safeTemp;
+		
 	}
 
 }

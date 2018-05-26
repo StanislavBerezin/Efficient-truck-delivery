@@ -1,7 +1,70 @@
->Refrigerated
-ice cream,100
-cheese,75
-rice,90
 >Ordinary
-cookies,10
-biscuits,50
+rice,448
+beans,552
+
+>Ordinary
+beans,732
+biscuits,268
+
+>Ordinary
+biscuits,991
+chips,9
+
+>Ordinary
+chips,253
+chocolate,575
+bread,172
+
+>Refridgerated
+mushrooms,464
+tomatoes,336
+
+>Refridgerated
+tomatoes,261
+lettuce,539
+
+>Refridgerated
+grapes,278
+asparagus,339
+celery,183
+
+>Refridgerated
+celery,209
+chicken,591
+
+>Refridgerated
+chicken,48
+beef,752
+
+>Refridgerated
+beef,55
+fish,745
+
+>Refridgerated
+fish,193
+yoghurt,382
+milk,225
+
+>Refridgerated
+milk,417
+cheese,383
+
+>Refridgerated
+cheese,489
+ice cream,311
+
+>Refridgerated
+ice cream,108
+ice,377
+frozen meat,315
+
+>Refridgerated
+frozen meat,696
+frozen vegetable mix,104
+
+>Ordinary
+bread,54
+
+>Refridgerated
+frozen vegetable mix,297
+

@@ -12,7 +12,7 @@ public class Store {
 	String storeName;
 	private double storeCapital;
 	private static final Store instance = new Store();
-	public List<Item> inventory = new ArrayList<Item>();
+	private Stock inventory = new Stock();
 	
 	// private constructor to avoid client applications to use constructor
 	private Store(){
@@ -30,31 +30,14 @@ public class Store {
 	// it reads the CSV
 	// and returns a list of item objects, each with 0 quantity
 
-	public void addInventory(String fileLocation) throws CSVFormatException, IOException {
-
-		if(!ItemPropertyImporter.isFileCSV(fileLocation)){
-			
-			throw new CSVFormatException("You must upload a file with extension: .csv");
-		}
-		//System.out.println(ItemPropertyImporter.getFileExtension(fileLoc));
-		//System.out.println(fileLoc);
-		
-		List<Item> itemList = ItemPropertyImporter.getCSVItems(fileLocation);
-
-		for (Item item : itemList) {
-
-			inventory.add(item);
-
-		}
-		
-	}
+	
 
 	public Object[][] createGuiData() {
 
-		Object[][] data = new Object[inventory.size()][7];
-		java.util.Iterator<Item> invItr = inventory.iterator();
+		Object[][] data = new Object[inventory.stockList().size()][7];
+		java.util.Iterator<Item> invItr = inventory.stockList().iterator();
 
-		for (int i = 0; i < inventory.size(); i++) {
+		for (int i = 0; i < inventory.stockList().size(); i++) {
 
 			if (invItr.hasNext()) {
 
@@ -110,18 +93,10 @@ public class Store {
 		this.storeCapital = this.storeCapital - cost;
 
 	}
-
-	public void printInventory() {
-
-		for (Item item : inventory) {
-
-			System.out.println(item.itemName + " " + item.quantity);
-
-		}
-		System.out.println("Capital: $" + Double.toString(this.getCapital()));
-
+	
+	public Stock getInventory(){
+		
+		return inventory;
 	}
-	
-	
 
 }

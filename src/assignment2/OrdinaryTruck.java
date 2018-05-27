@@ -17,7 +17,7 @@ public class OrdinaryTruck extends Truck {
  	 *  
  	 */
 	
-	int capacity = 1000;
+	int capacity = 1000; 
 	double cost;
 	int cargoCount = 0;
 

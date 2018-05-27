@@ -12,7 +12,7 @@ import GUI.introGUI;
  * 
  * @author Brant Geeves 
  *
- */
+ */ 
 public class Program {
 	
 	/**The entry point to the program.

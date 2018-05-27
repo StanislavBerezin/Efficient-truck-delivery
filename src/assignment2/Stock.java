@@ -20,7 +20,7 @@ public class Stock {
 	 * 
 	 */
 	public Stock() { 
-		
+		 
 		inventory = new ArrayList<Item>();
 	}
 	

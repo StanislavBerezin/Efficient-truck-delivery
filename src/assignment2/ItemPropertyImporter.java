@@ -14,7 +14,7 @@ import Exceptions.CSVFormatException;
  * @author Brant Geeves
 */
 
-public class ItemPropertyImporter {
+public class ItemPropertyImporter { 
 
 	
 	/**This static method takes a csv file location as input,

@@ -29,7 +29,7 @@ public class Item {
 		this.itemName = itemName;
 		this.itemCost = itemCost;
 		this.itemPrice = itemPrice;
-		this.reorderPoint = reorderPoint;
+		this.reorderPoint = reorderPoint; 
 		this.reorderAmount = reorderAmount;
 		this.itemTemp = itemTemp;
 

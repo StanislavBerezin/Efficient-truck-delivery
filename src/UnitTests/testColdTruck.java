@@ -11,7 +11,7 @@ import assignment2.ColdTruck;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Stanislav
+ * @author Brant Geeves
  *
  */
 

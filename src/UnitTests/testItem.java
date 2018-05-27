@@ -11,7 +11,7 @@ import assignment2.Item;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Stanislav
+ * @author Stanislav Berezin
  *
  */
 public class testItem {

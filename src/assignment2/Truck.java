@@ -3,28 +3,30 @@ package assignment2;
 import java.util.ArrayList;
 import java.util.List;
 
+/** An abstract class to represent a Truck.
+ * This class is extended by ColdTruck and Ordinary Truck to represent the truck types.
+ * 
+ * @author Stanislav Berezin
+*/
+
 public abstract class Truck {
 
-	// will need a constructor and some abstract classes
-	// which will be implemented in ColdTruck and NormalTruck files
-
-	/// IMPORTANT
-	///
-	/// Somehow we must be able to go through the list of items
-	/// it is needed to confirm that no cold items are placed in normalTruck
-	/// PLUS it is needed to confirm the required temperature of a coldTruck
-	/// can use loops from your itemImporter
-
-	double truckCost;
-	int truckCapacity;
 	List<Item> inventory;
 
-	protected List<String> cargoList = new ArrayList<>();
+	protected List<String> cargoList = new ArrayList<>(); 
 
 	public abstract double calculateCost();
 
 	public abstract int calculateCapacity();
 
+	
+	/**Returns the trucks current cargo as a list of Strings.
+	 * When a new truck is initialised, a string with the truck type
+	 * is added to the cargo list, in order to identify the truck
+	 * type when it is added to a manifest.
+	 * 
+	 * @return cargoList
+	 */
 	public List<String> getCargo() {
 
 		return this.cargoList;

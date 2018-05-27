@@ -9,13 +9,34 @@ import java.util.Objects;
 
 import Exceptions.CSVFormatException;
 
+/** This class contains static methods for importing an Item Properties csv file.
+ * 
+ * @author Brant Geeves
+*/
+
 public class ItemPropertyImporter {
 
+	
+	/**This static method takes a csv file location as input,
+	 * which the user selects via a file chooser within the Intro GUI.
+	 * The class throws exceptions when its detects an issue with the csv file;
+	 * either the extension or the the format of the data within it.
+	 * 
+	 * @param fileLocation - file location of the Item Property file as a string 
+	 * @return inventory - a list of Items, which can be passed to a Stock object to create an inventory
+	 * @throws CSVFormatException - throws this exception for issues around csv file format and data
+	 * @throws IOException - throws this exception when a problem is detected with IO
+	 */
 	public static List<Item> getCSVItems(String fileLocation) throws CSVFormatException, IOException {
 
+		if(!isFileCSV(fileLocation)){
+			throw new CSVFormatException("You must upload a file with extension: .csv");
+		}
+		
+		
 		List<Item> inventory = new ArrayList<Item>();
 
-		BufferedReader r = new BufferedReader(new FileReader(fileLocation));
+		BufferedReader r = new BufferedReader(new FileReader(fileLocation)); 
 
 		String line = r.readLine();
 		

@@ -30,9 +30,11 @@ import Exceptions.StockException;
 import assignment2.Manifest;
 import assignment2.Store;
 
-/**
+/**This class displays and handles the functions of the main graphical user interface,
+ * where the majority of the user tasks are completed. It extends the JFrame and implements
+ * ActionListener and Runnable.
+ * 
  * @author Brant Geeves
- *
  */
 public class GUI extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = -7031008862559936404L;
@@ -55,7 +57,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	// Table goes inside Scroll Pane
 	private JTable jta;
-	DefaultTableModel dm = new DefaultTableModel();
+	DefaultTableModel dm = new DefaultTableModel(); 
 
 	private JLabel storeName;
 	private JLabel capital;
@@ -68,17 +70,19 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 	private Object[][] data;
 
-	/**
-	 * @param arg0
-	 * @throws HeadlessException
+	/**Constructor for a new GUI and passes a program name string to the super type.
+	 * @throws HeadlessException - throws this exception if the system is put into headless mode
 	 */
 	public GUI() throws HeadlessException {
 		super("Inventory Controller 5000");
-		
-		
 	}
 
-	private void createGUI() throws IOException {
+	/**This class is where the components of the GUI are initialised and laid out.
+	 * 
+	 * @throws IOException - throws this exception when a problem is detected with IO
+	 * @throws StockException - throws this exception when there is no inventory to display
+	 */
+	private void createGUI() throws IOException, StockException {
 
 		data = Store.getInstance().createGuiData();
 
@@ -111,26 +115,45 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		this.setVisible(true);
 	}
 
-	private void refreshGUI() {
+	/**This method refreshes the dynamic elements of the GUI.
+	 * It is called when a change to either the inventory or store capital has been made.
+	 * 
+	 * @throws StockException - throws this exception when there is no inventory to display
+	 */
+	private void refreshGUI() throws StockException {
 
 		capital.setText(String.format("Capital: $%.2f", Store.getInstance().getCapital()));
 		checkCapital();
 		dm.setDataVector(Store.getInstance().createGuiData(), columnNames);
 
 	}
-
+	/**Creates and individual JPanel object and sets its background colour.
+	 * The JPaenls are used to hold the other components of the GUI like buttons. 
+	 * @param c - the panels colour
+	 * @return jp - the panel object
+	 */
 	private JPanel createPanel(Color c) {
 		JPanel jp = new JPanel();
 		jp.setBackground(c);
 		return jp;
 	}
-
+	/**Creates an individual JButton and adds and action listener to it,
+	 * in order to know when a button has been clicked by the user.
+	 * 
+	 * @param str - a string representing the buttons label
+	 * @return jb - the button object
+	 */
 	private JButton createButton(String str) {
 		JButton jb = new JButton(str);
 		jb.addActionListener(this);
 		return jb;
 	}
-
+	/**Creates a JScrollPane object that is used to hold the inventory table.
+	 * A scroll pane is necessary so that the table can be scrolled if the size grows too
+	 * large for the window.
+	 * 
+	 * @return scrl - the scroll pane object
+	 */
 	private JScrollPane createTableArea() {
 
 		dm.setDataVector(data, columnNames);
@@ -143,7 +166,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 
 		return scrl;
 	}
-
+	/**This method initialises and lays out the components in the header panel of the GUI.
+	 * This is where the store name and capital are displayed. 
+	 */
 	private void layoutHeaderPanel() {
 
 		GridBagLayout layout = new GridBagLayout();
@@ -176,7 +201,10 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		addToPanel(pnlHeader, inv, constraints, 0, 4, 2, 2);
 
 	}
-
+	/**Checks the value of the store capital.
+	 * If it is positive, the capital is displayed in green.
+	 * If it is negative, the capital is displayed red. 
+	 */
 	private void checkCapital() {
 
 		if (Store.getInstance().getCapital() >= 0) {
@@ -186,7 +214,10 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		}
 
 	}
-
+	
+	/* Initialises and lays out the button components at the bottom of the GUI
+	 * 
+	 */
 	private void layoutButtonPanel() {
 		GridBagLayout layout = new GridBagLayout();
 		pnlBtn.setLayout(layout);
@@ -213,6 +244,8 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 	 *
 	 * @param c
 	 *            the component to add
+	 * @param jp
+	 * 			  the JPanel object
 	 * @param constraints
 	 *            the grid bag constraints to use
 	 * @param x
@@ -232,8 +265,7 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		jp.add(c, constraints);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/** Over-rides the run function from Runnable.
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -244,15 +276,25 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 		} catch (IOException e) {
 
 			e.printStackTrace();
+		} catch (StockException e1) {
+			JOptionPane.showMessageDialog(this, e1.getMessage(),
+					"Error: Stock Exception", JOptionPane.WARNING_MESSAGE);
 		}
-		refreshGUI();
+		try {
+			refreshGUI();
+		} catch (StockException e1) {
+			JOptionPane.showMessageDialog(this, e1.getMessage(),
+					"Error: Stock Exception", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
+   /** Over-rides the actionPerformed function from ActionListener.
+     * This is where the program is notified of a button click by the user
+     * and performs the appropriate function. If an exception is thrown from
+     * one of the back-end processes, this is where the exception is caught and
+     * a message is displayed to the user about the issue.     * 
 	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -299,6 +341,9 @@ public class GUI extends JFrame implements ActionListener, Runnable {
 			}	catch (NullPointerException e1) {
 				JOptionPane.showMessageDialog(this, "In order to receive a new delivery, you must upload a Manifest file.",
 						"Error: Manifest file not found", JOptionPane.WARNING_MESSAGE);
+			} catch (StockException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(),
+						"Error: Stock Exception", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		// Button for loading sales logs

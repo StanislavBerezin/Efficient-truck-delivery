@@ -13,13 +13,29 @@ import Exceptions.CSVFormatException;
 import Exceptions.DeliveryException;
 import Exceptions.StockException;
 
+/** This class contains static methods for creating and receiving manifests and receiving sales logs.
+ * 	Manifests are created as a text files.
+ * 
+ * @author Brant Geeves
+*/
 public class Manifest {
 
-	String fileLoc;
-
+	/**This static method creates a manifest as a text file, given a file location as input.
+	 * The manifest contains a list of Trucks and their cargo, based on what items within the inventory
+	 * have reached or surpassed their reorder point. The maximum quantity required in stock is the reorder
+	 * point plus the reorder amount. The actual order amount is this quantity minus the amount already in stock. 
+	 * The method throws exceptions when it detects an incorrect file extension or when there is no stock
+	 * that needs to be replenished.
+	 * 
+	 * @param fileLoc - file location of the Item Property file as a string 
+	 * @throws IOException - throws this exception when a problem is detected with IO
+	 * @throws CSVFormatException - throws this exception for issues around csv file format and data
+	 * @throws StockException - throws this exception when an issue regarding Stock or Items arises
+	 */
+		
 	public static void createManifest(String fileLoc) throws IOException, CSVFormatException, StockException {
 
-		if(!ItemPropertyImporter.isFileCSV(fileLoc)){
+		if(!ItemPropertyImporter.isFileCSV(fileLoc)){ 
 			
 			throw new CSVFormatException("Please save the Manifest with .csv extension");
 			
@@ -119,7 +135,14 @@ public class Manifest {
 		buffer.close();
 
 	}
-
+	/**This static method receives manifests, from the given file location,
+	 * and adjusts the inventory and store capital accordingly.
+	 * 
+	 * @param fileLocation - file location of the Item Property file as a string 
+	 * @throws IOException - throws this exception when a problem is detected with IO
+	 * @throws DeliveryException - throws this exception when an issue with importing manifests arises
+	 * @throws CSVFormatException - throws this exception for issues around csv file format and data
+	 */
 	public static void receiveManifest(String fileLocation) throws IOException, DeliveryException, CSVFormatException {
 
 		if(!ItemPropertyImporter.isFileCSV(fileLocation)){
@@ -224,7 +247,17 @@ public class Manifest {
 		}
 
 	}
-
+	
+	/**This static method inputs sales logs, from the given file location, and adjusts the inventory
+	 * and store capital accordingly. The process is aborted if there is an issue with the file type or format.
+	 * The process is aborted and an exception is thrown if any of the items on the sales log would be negative 
+	 * in the inventory and a message is displayed to the user showing those items and the over sold quantity.
+	 * 
+	 * @param fileLocation - file location of the Item Property file as a string 
+	 * @throws IOException - throws this exception when a problem is detected with IO
+	 * @throws CSVFormatException - throws this exception for issues around csv file format and data
+	 * @throws StockException - throws this exception when an issue regarding Stock or Items arises
+	 */
 	public static void loadSalesLog(String fileLocation) throws IOException, CSVFormatException, StockException {
 
 		if(!ItemPropertyImporter.isFileCSV(fileLocation)){
@@ -286,6 +319,11 @@ public class Manifest {
 
 	}
 	
+	/**This method checks the inventory and returns true if any item with the inventory
+	 * needs to be replenished, otherwise returns false.
+	 * 
+	 * @return itemsToOrder
+	 */
 	private static boolean anyItemsToOrder(){
 		
 		boolean itemsToOrder = false;

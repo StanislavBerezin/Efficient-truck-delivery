@@ -27,9 +27,11 @@ import Exceptions.FormException;
 import Exceptions.StockException;
 import assignment2.Store;
 
-/**
+/**This class is the GUI for the initial GUI where the user names a new store
+ * and selects an item properties file to create an inventory. It functions in
+ * the same way as the main GUI.
+ * 
  * @author Brant Geeves
- *
  */
 public class introGUI extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = -7031008862559936404L;
@@ -46,15 +48,17 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 
 	final JFileChooser fc = new JFileChooser();
 
-	/**
-	 * @param arg0
-	 * @throws HeadlessException
+	/**Constructor for the intro GUI, sends the program title to the super type.
+	 * 
+	 * @throws HeadlessException - throws this exception if the system is put into headless mode
 	 */
 	public introGUI() throws HeadlessException {
 		super("Inventory Controller 5000");
 
 	}
-
+	/**This class is where the components of the intro GUI are initialised and laid out.
+	 * 
+	 */
 	private void createGUI() {
 
 		setSize(WIDTH, HEIGHT);
@@ -80,25 +84,44 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		
 		
 	}
-
+	
+	/**Creates and individual JPanel object and sets its background colour.
+	 * The JPaenls are used to hold the other components of the GUI like buttons. 
+	 * @param c - the panels colour
+	 * @return jp - the panel object
+	 */
 	private JPanel createPanel(Color c) {
 		JPanel jp = new JPanel();
 		jp.setBackground(c);
 		return jp;
 	}
-
+	
+	/**Creates an individual JButton and adds and action listener to it,
+	 * in order to know when a button has been clicked by the user.
+	 * 
+	 * @param str - a string representing the buttons label
+	 * @return jb - the button object
+	 */
 	private JButton createButton(String str) {
 		JButton jb = new JButton(str);
 		jb.addActionListener(this);
 		return jb;
 	}
-
+	
+	/**Creates a JTextArea object where the user will input the stores name.
+	 * 
+	 * @return ta - the Text area object
+	 */
 	private JTextArea createTextArea() {
 		JTextArea ta = new JTextArea();
 		ta.setRows(1);
 		return ta;
 	}
-
+	
+	/**This method initialises and lays out the components in main panel of the GUI.
+	 * This is where the store name is entered by the user and where they select
+	 * an item properties file. 
+	 */
 	private void layoutButtonPanel() {
 		GridBagLayout layout = new GridBagLayout();
 		pnlBtn.setLayout(layout);
@@ -126,6 +149,8 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 	 *
 	 * @param c
 	 *            the component to add
+	 * @param jp
+	 * 			  the JPanel object
 	 * @param constraints
 	 *            the grid bag constraints to use
 	 * @param x
@@ -145,8 +170,7 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		jp.add(c, constraints);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/** Over-rides the run function from Runnable.
 	 * 
 	 * @see java.lang.Runnable#run()
 	 */
@@ -156,11 +180,13 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/** Over-rides the actionPerformed function from ActionListener.
+     * This is where the program is notified of a button click by the user
+     * and performs the appropriate function. If an exception is thrown from
+     * one of the back-end processes, this is where the exception is caught and
+     * a message is displayed to the user about the issue.
 	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e){
@@ -203,12 +229,22 @@ public class introGUI extends JFrame implements ActionListener, Runnable {
 		}
 	}
 	
+	/**A simple boolean method to flag if the user has already added
+	 * an item property file.
+	 * 
+	 * @return itemListReceived
+	 */
 	public static boolean itemListAdded(){
 		
 		return itemListReceived;
 			
 	}
 	
+	/**Throws an exception if the user tries to create a store before adding
+	 * an item property file.
+	 * 
+	 * @throws StockException - throws this exception when there is an issue with Stock or Items
+	 */
 	public static void itemWasListAdded() throws StockException{
 		
 		if(!introGUI.itemListAdded()){

@@ -27,7 +27,7 @@ public abstract class Truck {
 	 * 
 	 * @return cargoList
 	 */
-	public List<String> getCargo() {
+	public List<String> getCargo() { 
 
 		return this.cargoList;
 	}
